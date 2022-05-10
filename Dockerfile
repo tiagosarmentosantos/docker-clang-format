@@ -40,7 +40,7 @@ RUN git clone --branch "${LLVM_GIT_TAG}" \
           -DCMAKE_BUILD_TYPE=Release \
 		  -DLLVM_ENABLE_PROJECTS=clang \
 		  -DCMAKE_INSTALL_PREFIX=/opt/llvm-clang ../llvm && \
-	make -j 24 && \
+	make -j 4 && \
     make install && \
     rm -rf /build
 
