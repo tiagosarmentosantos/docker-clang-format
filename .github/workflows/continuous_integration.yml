@@ -37,20 +37,20 @@ jobs:
       - name: Setup environment
         shell: bash
         run: |
-          if [[ -z github.event.inputs.image_publish ]];
+          if [[ -z ${{github.event.inputs.image_publish}} ]];
           then
             echo "ENV_VAR_PUBLISH=false" >> $GITHUB_ENV
           else
             echo "ENV_VAR_PUBLISH=${{github.event.inputs.image_publish}}" >> $GITHUB_ENV
           fi
-          if [[ -z github.event.inputs.image_version ]];
+          if [[ -z ${{github.event.inputs.image_version}} ]];
           then
             echo "ENV_VAR_VERSION=0.0.0" >> $GITHUB_ENV
           else
             echo "ENV_VAR_VERSION=${{github.event.inputs.image_version}}" >> $GITHUB_ENV
           fi
-          echo "ENV_VAR_PUBLISH =  ${ENV_VAR_PUBLISH}"
-          echo "ENV_VAR_VERSION =  ${ENV_VAR_VERSION}"
+          echo "ENV_VAR_PUBLISH =  ${{env.ENV_VAR_PUBLISH}}"
+          echo "ENV_VAR_VERSION =  ${{env.ENV_VAR_VERSION}}"
           
       - name: Build docker image
         run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
