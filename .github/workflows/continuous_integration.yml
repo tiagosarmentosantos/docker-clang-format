@@ -37,8 +37,10 @@ jobs:
       - name: Setup enviroment variables
         shell: bash
         run: |
-          echo "Input variable for image publish is: ${IN_VAR_PUBLISH}"   
-          echo "Input variable for image version is: ${IN_VAR_VERSION}"
+          JOB_VAR_PUBLISH=${IN_VAR_PUBLISH:-"false"}
+          JOB_VAR_VERSION=${IN_VAR_VRESION:-"0.0.0"}
+          echo "Variable value for image publish is: ${JOB_VAR_PUBLISH}"   
+          echo "Variable value for image version is: ${JOB_VAR_VERSION}"
         env:
           IN_VAR_PUBLISH: ${{ github.event.inputs.image_publish }}
           IN_VAR_VERSION: ${{ github.event.inputs.image_version }}
