@@ -1,0 +1,22 @@
+name: Continuous Integration
+
+# Define when CI workflow is run
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+  workflow_dispatch:
+
+jobs:
+  build_image:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the docker image
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:latest
