@@ -37,8 +37,8 @@ jobs:
       - name: Setup enviroment variables
         shell: bash
         run: |
-          echo "Variable value for image publish is: ${ENV_VAR_PUBLISH}"   
-          echo "Variable value for image version is: ${ENV_VAR_VERSION}"
+          echo "Variable value for image publish is: ${env.ENV_VAR_PUBLISH}}"   
+          echo "Variable value for image version is: ${{env.ENV_VAR_VERSION}}"
         env:
           ENV_VAR_PUBLISH: ${{ contains(github.event.inputs.image_publish, 'true') && 'true' || 'false' }}
           ENV_VAR_VERSION: ${{ contains(github.event.inputs.image_version, '') && '0.0.0' || github.event.inputs.image_version }}
@@ -52,11 +52,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
 
       - name: Run docker image
-        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION} --version
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}} --version
         
-      - if: ${{ github.event.inputs.publish_image == 'true' }}
+      - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
         name: Publish docker image
         run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
