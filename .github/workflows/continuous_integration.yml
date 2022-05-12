@@ -37,15 +37,11 @@ jobs:
       - name: Setup enviroment variables
         shell: bash
         run: |
-          #JOB_VAR_PUBLISH=${IN_VAR_PUBLISH:-"false"}
-          #JOB_VAR_VERSION=${IN_VAR_VRESION:-"0.0.0"}
-          echo "Variable value for image publish is: ${JOB_VAR_PUBLISH}"   
-          echo "Variable value for image version is: ${JOB_VAR_VERSION}"
+          echo "Variable value for image publish is: ${ENV_VAR_PUBLISH}"   
+          echo "Variable value for image version is: ${ENV_VAR_VERSION}"
         env:
-          IN_VAR_PUBLISH: ${{ github.event.inputs.image_publish }}
-          IN_VAR_VERSION: ${{ github.event.inputs.image_version }}
-          JOB_VAR_PUBLISH: ${{IN_VAR_PUBLISH:-"false"}}
-          JOB_VAR_VERSION: ${{IN_VAR_VRESION:-"0.0.0"}}
+          ENV_VAR_PUBLISH: ${{ contains(github.event.inputs.image_publish, 'true' && 'true' || 'false' }}
+          ENV_VAR_VERSION: ${{ contains(github.event.inputs.image_version, '') && '0.0.0' || github.event.inputs.image_version }}
 
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - name: Login to GitHub Container Registry
