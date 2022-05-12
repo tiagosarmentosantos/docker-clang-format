@@ -37,13 +37,13 @@ jobs:
       - name: Setup environment
         shell: bash
         run: |
-          if [[ -z ${{github.event.inputs.image_publish}} ]];
+          if [[ -z "${{github.event.inputs.image_publish}}" ]];
           then
             echo "ENV_VAR_PUBLISH=false" >> $GITHUB_ENV
           else
             echo "ENV_VAR_PUBLISH=${{github.event.inputs.image_publish}}" >> $GITHUB_ENV
           fi
-          if [[ -z ${{github.event.inputs.image_version}} ]];
+          if [[ -z "${{github.event.inputs.image_version}}" ]];
           then
             echo "ENV_VAR_VERSION=0.0.0" >> $GITHUB_ENV
           else
