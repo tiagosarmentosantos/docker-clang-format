@@ -40,7 +40,7 @@ jobs:
           echo "Variable value for image publish is: ${ENV_VAR_PUBLISH}"   
           echo "Variable value for image version is: ${ENV_VAR_VERSION}"
         env:
-          ENV_VAR_PUBLISH: ${{ contains(github.event.inputs.image_publish, 'true' && 'true' || 'false' }}
+          ENV_VAR_PUBLISH: ${{ contains(github.event.inputs.image_publish, 'true') && 'true' || 'false' }}
           ENV_VAR_VERSION: ${{ contains(github.event.inputs.image_version, '') && '0.0.0' || github.event.inputs.image_version }}
 
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
