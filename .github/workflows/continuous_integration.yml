@@ -31,23 +31,23 @@ jobs:
     strategy:
       fail-fast: true
     env:
-      ENV_VAR_PUBLISH: ${{ github.event.inputs.image_publish == 'true' && 'true'  || 'false' }}
-      ENV_VAR_VERSION: ${{ github.event.inputs.image_version == ''     && '0.0.0' || github.event.inputs.image_version }}
+      ENV_VAR_PUBLISH: ${{ github.event.inputs.image_publish == '' && 'false' || github.event.inputs.image_publish }}
+      ENV_VAR_VERSION: ${{ github.event.inputs.image_version == '' && '0.0.0' || github.event.inputs.image_version }}
     
     steps:
       - uses: actions/checkout@v3  
       
-      - name: Setup environment
+      - name: Dump environment variables
         shell: bash
         run: |
-          echo "ENV_VAR_PUBLISH =  ${{env.ENV_VAR_PUBLISH}}"
-          echo "ENV_VAR_VERSION =  ${{env.ENV_VAR_VERSION}}"
+          echo "ENV_VAR_PUBLISH = ${{env.ENV_VAR_PUBLISH}}"
+          echo "ENV_VAR_VERSION = ${{env.ENV_VAR_VERSION}}"
           
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
 
       - name: Run docker image
-        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION} --version
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}} --version
       
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
@@ -60,4 +60,4 @@ jobs:
       
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
         name: Publish docker image
-        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
