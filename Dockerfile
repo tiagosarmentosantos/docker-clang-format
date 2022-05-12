@@ -1,8 +1,8 @@
-# Set link to github repo containing sources of this container
-LABEL org.opencontainers.image.source https://github.com/tiagosarmentosantos/docker-clang-format
-
 # Set base system for this docker
 FROM alpine:3.15
+
+# Set link to github repo containing sources of this container
+LABEL org.opencontainers.image.source https://github.com/tiagosarmentosantos/docker-clang-format
 
 # Set the latest LLVM release value
 # clang-format is part of LLVM project, this ENV shall be updated
