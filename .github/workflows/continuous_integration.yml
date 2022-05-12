@@ -37,7 +37,7 @@ jobs:
       - name: Setup enviroment variables
         shell: bash
         run: |
-          echo "Variable value for image publish is: ${env.ENV_VAR_PUBLISH}}"   
+          echo "Variable value for image publish is: ${{env.ENV_VAR_PUBLISH}}"   
           echo "Variable value for image version is: ${{env.ENV_VAR_VERSION}}"
         env:
           ENV_VAR_PUBLISH: ${{ contains(github.event.inputs.image_publish, 'true') && 'true' || 'false' }}
