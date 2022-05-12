@@ -24,15 +24,6 @@ on:
           - 'true'
           - 'false'
 
-env:
-  ENV_PUBLISH: false
-  -if:  ${{ github.event.inputs.publish_image == 'true' }}
-    ENV_PUBLISH: true
-    
-  ENV_VERSION: '0.0.0'
-  -if:  ${{ github.event.inputs.publish_image == '' }}
-    ENV_VERSION 
-
 jobs:
   continuous_integration:
     name: Continuous integration
