@@ -4,8 +4,8 @@
 ![GitHub](https://img.shields.io/github/license/tiagosarmentosantos/docker-clang-format)
 
 [![Continuous Integration](https://github.com/tiagosarmentosantos/docker-clang-format/actions/workflows/continuous_integration.yml/badge.svg?branch=main)](https://github.com/tiagosarmentosantos/docker-clang-format/actions/workflows/continuous_integration.yml)
-![Release Date](https://img.shields.io/github/release-date/tiagosarmento/docker-clang-format)
-![Release Version](https://img.shields.io/github/release-date/tiagosarmento/docker-clang-format)
+![Release Version](https://img.shields.io/github/v/release/tiagosarmentosantos/docker-clang-format)
+![Release Date](https://img.shields.io/github/release-date/tiagosarmentosantos/docker-clang-format)
 
 This container wraps the latest version of clang-format tool, and its intended to be used across multiple systems.
 See clang-format documentation [here](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
