@@ -54,4 +54,4 @@ jobs:
       
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
         name: Publish docker image
-        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
