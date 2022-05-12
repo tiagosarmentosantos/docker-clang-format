@@ -4,6 +4,9 @@ FROM alpine:3.15
 # Set link to github repo containing sources of this container
 LABEL org.opencontainers.image.source https://github.com/tiagosarmentosantos/docker-clang-format
 
+# Set short container description
+LABEL org.opencontainers.image.description "This container wraps the latest version of clang-format tool."
+
 # Set the latest LLVM release value
 # clang-format is part of LLVM project, this ENV shall be updated
 # if a more recent version is intended to use.
