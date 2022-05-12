@@ -56,6 +56,6 @@ jobs:
       - name: Run docker image
         run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION} --version
         
-      - if: ${JOB_VAR_PUBLISH} == 'true'
+      - if: ${{ github.event.inputs.publish_image == 'true' }}
         name: Publish docker image
         run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
