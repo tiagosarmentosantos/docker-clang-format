@@ -49,6 +49,7 @@ jobs:
           else
             echo "ENV_VAR_VERSION=${{github.event.inputs.image_version}}" >> $GITHUB_ENV
           fi
+          echo "GITHUB ENV = ${GITHUB_ENV}"
           echo "ENV_VAR_PUBLISH =  ${{env.ENV_VAR_PUBLISH}}"
           echo "ENV_VAR_VERSION =  ${{env.ENV_VAR_VERSION}}"
           
