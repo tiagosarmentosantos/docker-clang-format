@@ -49,8 +49,8 @@ jobs:
           else
             echo "ENV_VAR_VERSION=${{github.event.inputs.image_version}}" >> $GITHUB_ENV
           fi
-          echo "ENV_VAR_PUBLISH =  ${{ENV_VAR_PUBLISH}}"
-          echo "ENV_VAR_VERSION =  ${{ENV_VAR_VERSION}}"
+          echo "ENV_VAR_PUBLISH =  ${ENV_VAR_PUBLISH}"
+          echo "ENV_VAR_VERSION =  ${ENV_VAR_VERSION}"
           
       - name: Build docker image
         run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
