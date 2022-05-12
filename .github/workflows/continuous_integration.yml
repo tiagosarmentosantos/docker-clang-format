@@ -18,8 +18,11 @@ on:
         default: '0.0.0'
       publish_image:
         description: 'Publish image'
-        required: true
-        default: 'false'
+        default: 'false' 
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 jobs:
   continuous_integration:
@@ -37,11 +40,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}}
 
       - name: Run docker image
-        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}} --version
         
-      - if: github.event.inputs.publish_image == 'true'
+      - if: ${{ github.event.inputs.publish_image == 'true' }}
         name: Publish docker image
-        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}}
