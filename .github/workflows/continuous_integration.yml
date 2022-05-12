@@ -40,14 +40,26 @@ jobs:
       - name: Setup environment
         shell: bash
         run: |
-          echo "ENV_VAR_PUBLISH =  ${{env.ENV_VAR_PUBLISH}}"
-          echo "ENV_VAR_VERSION =  ${{env.ENV_VAR_VERSION}}"
-      
+          if [[ -z "${github.event.inputs.image_publish}" ]];
+          then
+            echo "ENV_VAR_PUBLISH=false" >> $GITHUB_ENV
+          else
+            echo "ENV_VAR_PUBLISH=${github.event.inputs.image_publish}" >> $GITHUB_ENV
+          fi
+          if [[ -z "${github.event.inputs.image_version}" ]];
+          then
+            echo "ENV_VAR_VERSION=0.0.0" >> $GITHUB_ENV
+          else
+            echo "ENV_VAR_VERSION=${github.event.inputs.image_version}" >> $GITHUB_ENV
+          fi
+          echo "ENV_VAR_PUBLISH =  ${env.ENV_VAR_PUBLISH}"
+          echo "ENV_VAR_VERSION =  ${env.ENV_VAR_VERSION}"
+          
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
 
       - name: Run docker image
-        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}} --version
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION} --version
       
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
@@ -60,4 +72,4 @@ jobs:
       
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
         name: Publish docker image
-        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${{env.ENV_VAR_VERSION}}
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${env.ENV_VAR_VERSION}
