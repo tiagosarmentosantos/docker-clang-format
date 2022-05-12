@@ -24,12 +24,35 @@ on:
           - 'true'
           - 'false'
 
+env:
+  ENV_PUBLISH: false
+  -if:  ${{ github.event.inputs.publish_image == 'true' }}
+    ENV_PUBLISH: true
+    
+  ENV_VERSION: '0.0.0'
+  -if:  ${{ github.event.inputs.publish_image == '' }}
+    ENV_VERSION 
+
 jobs:
   continuous_integration:
     name: Continuous integration
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup enviroment variables
+        run: |
+        IN_VAR_PUBLISH=${{ github.event.inputs.publish_image }}
+        echo "Input variable for image publish is: ${IN_VAR_PUBLISH}"
+        JOB_VAR_PUBLISH=${IN_VAR_PUBLISH:-"false"}
+        echo "Job variable for image publish is: ${JOB_VAR_PUBLISH}"
+        IN_VAR_VERSION=${{ github.event.inputs.image_version }}
+        echo "Input variable for image version is: ${IN_VAR_VERSION}"
+        JOB_VAR_VERSION=${IN_VAR_VERSION:-"0.0.0"}
+        echo "Job variable for image version is: ${JOB_VAR_VERSION}"
 
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - name: Login to GitHub Container Registry
@@ -40,11 +63,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Build docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}}
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
 
       - name: Run docker image
-        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}} --version
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION} --version
         
-      - if: ${{ github.event.inputs.publish_image == 'true' }}
+      - if: ${{ ${JOB_VAR_PUBLISH} == 'true' }}
         name: Publish docker image
-        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${{github.event.inputs.image_version}}
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:${JOB_VAR_VERSION}
