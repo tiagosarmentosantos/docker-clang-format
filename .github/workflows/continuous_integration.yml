@@ -11,12 +11,37 @@ on:
     paths-ignore:
       - '*.md'
   workflow_dispatch:
+    inputs:
+      image_version:
+        description: 'Docker image version'
+        required: true
+        default: '0.0.0'
+      publish_image:
+        description: 'Publish image'
+        required: true
+        default: 'false'
 
 jobs:
-  build_image:
-    name: Build Image
+  continuous_integration:
+    name: Continuous integration
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build the docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:latest
+
+      # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Build docker image
+        run: docker build . --file Dockerfile --tag ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
+
+      - name: Run docker image
+        run: docker run --rm -v ${PWD}:/workdir --workdir /workdir ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
+        
+      - if: github.event.inputs.publish_image == 'true'
+        name: Publish docker image
+        run: docker push ghcr.io/tiagosarmentosantos/docker-clang-format:'${{github.event.inputs.image_version}}'
