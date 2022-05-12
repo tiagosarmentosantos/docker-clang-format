@@ -16,7 +16,7 @@ on:
         description: 'Docker image version'
         required: true
         default: '0.0.0'
-      publish_image:
+      image_publish:
         description: 'Publish image'
         default: 'false' 
         type: choice
@@ -40,8 +40,8 @@ jobs:
           echo "Input variable for image publish is: ${IN_VAR_PUBLISH}"   
           echo "Input variable for image version is: ${IN_VAR_VERSION}"
         env:
-          IN_VAR_PUBLISH: "sasa"
-          IN_VAR_VERSION: "sasas"
+          IN_VAR_PUBLISH: ${{ github.event.inputs.image_publish }}
+          IN_VAR_VERSION: ${{ github.event.inputs.image_version }}
 
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - name: Login to GitHub Container Registry
