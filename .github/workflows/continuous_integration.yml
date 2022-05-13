@@ -24,10 +24,6 @@ on:
           - 'true'
           - 'false'
 
-permissions:
-  contents: read
-  packages: write
-
 jobs:
   continuous_integration:
     name: Continuous integration
@@ -36,7 +32,7 @@ jobs:
       fail-fast: true
     env:
       ENV_VAR_PUBLISH: ${{ github.event.inputs.image_publish == '' && 'true' || github.event.inputs.image_publish }}
-      ENV_VAR_VERSION: ${{ github.event.inputs.image_version == '' && '0.0.0' || github.event.inputs.image_version }}
+      ENV_VAR_VERSION: ${{ github.event.inputs.image_version == '' && '0.0.1' || github.event.inputs.image_version }}
     
     steps:
       - uses: actions/checkout@v3  
