@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: true
     env:
-      ENV_VAR_PUBLISH: ${{ github.event.inputs.image_publish == '' && 'false' || github.event.inputs.image_publish }}
+      ENV_VAR_PUBLISH: ${{ github.event.inputs.image_publish == '' && 'true' || github.event.inputs.image_publish }}
       ENV_VAR_VERSION: ${{ github.event.inputs.image_version == '' && '0.0.0' || github.event.inputs.image_version }}
     
     steps:
