@@ -52,7 +52,7 @@ jobs:
       # See reference here: https://github.com/jonashackt/docker-hello-world/blob/main/.github/workflows/publish.yml
       - if: ${{ env.ENV_VAR_PUBLISH == 'true' }}
         name: Login to GitHub Container Registry
-        uses: actions/docker/login@master
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
